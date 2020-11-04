@@ -32,21 +32,21 @@ const getPossiblePoints = (picks, results) => {
         .filter(([state, choice]) => choice)
         .filter(([state, choice]) => !results[state])
         .map(([state, choice]) => pickOptions[state][choice])
-        .reduce((a, b) => a + b);
+        .reduce((a, b) => a + b, 0);
 }
 
 const getActualScore = (picks, results) => {
     return Object.entries(picks)
         .filter(([state, choice]) => choice)
         .map(([state, choice]) => results[state] === choice ? pickOptions[state][choice] : 0)
-        .reduce((a, b) => a + b)
+        .reduce((a, b) => a + b, 0)
 }
 
 const getBrianScore = (picks, results) => {
     return Object.entries(picks)
         .filter(([state, choice]) => choice)
         .map(([state, choice]) => results[state] === choice ? pickOptions[state][choice] : 0)
-        .reduce((a, b) => a + b)
+        .reduce((a, b) => a + b, 0)
 }
 
 const ScoreRow = ({user, picks, results, brian}) => {
