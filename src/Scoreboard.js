@@ -21,6 +21,8 @@ const ScoreContainer = styled.tr`
 const ScoresTable = styled.table`
   margin: auto;
   text-align: right;
+  max-width: 500px;
+  min-width: 100%;
 `
 
 const getPossiblePoints = (picks, results) => {
@@ -49,7 +51,7 @@ const ScoreRow = ({user, picks, results, brian}) => {
     const [expanded, setExpanded] = useState(false);
     return (
         <Fragment>
-            <ScoreContainer onClick={() => setExpanded(!expanded)}>
+            <ScoreContainer className="scoreboard-entry" onClick={() => setExpanded(!expanded)}>
                 <td>
                     {user.name}
                 </td>
@@ -74,7 +76,7 @@ const ScoreRow = ({user, picks, results, brian}) => {
 const ScoreboardMap = ({picks}) => {
     return (
         <tr>
-            <td colSpan='5'>
+            <td colSpan='5' className="state-container">
                 <USAMap customize={makeColors(picks)}/>
             </td>
         </tr>
@@ -117,10 +119,10 @@ export const Scoreboard = () => {
         <ScoreboardContainer>
             <h1> Scoreboard </h1>
             <ScoresTable>
-                <tr>
+                <tr className="table-header">
                     <th> Name</th>
                     <th> Possible</th>
-                    <th> BrianBot® Remaining</th>
+                    <th> BrianBot®<br />Remaining</th>
                     <th> BrianBot ®</th>
                     <th> Score</th>
                 </tr>
