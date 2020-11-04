@@ -120,7 +120,7 @@ export const Scoreboard = () => {
                 <tr>
                     <th> Name</th>
                     <th> Possible</th>
-                    <th> BrianBot ® Potential Maybe Points</th>
+                    <th> BrianBot® Remaining</th>
                     <th> BrianBot ®</th>
                     <th> Score</th>
                 </tr>
