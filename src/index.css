@@ -23,13 +23,21 @@ path:hover {
   cursor: pointer;
 }
 
-
+h1 {
+	font-size: 32px;
+	text-align: right;
+	margin-bottom: 40px;
+}
+.scoreboard-year {
+	font-weight: 200;
+}
 .table-header th {
 	border-bottom: 1px solid #eee;
 	padding-bottom: 10px;
 }
 .scoreboard-entry {
 	cursor: pointer;
+	user-select: none;
 }
 .scoreboard-entry:hover {
 	background: #eee;

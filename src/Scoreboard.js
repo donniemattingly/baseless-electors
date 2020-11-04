@@ -117,7 +117,7 @@ export const Scoreboard = () => {
 
     return (
         <ScoreboardContainer>
-            <h1> Scoreboard </h1>
+            <h1> Scoreboard <span className="scoreboard-year">2020</span> </h1>
             <ScoresTable>
                 <tr className="table-header">
                     <th> Name</th>
