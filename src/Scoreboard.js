@@ -22,6 +22,15 @@ const ScoresTable = styled.table`
   margin: auto;
 `
 
+const BlueOrRedState = styled.div`
+    ${({ bidenOrTrump }) => "biden" === bidenOrTrump[1] && `
+    color: blue;
+    `}
+    ${({ bidenOrTrump }) => "trump" === bidenOrTrump[1] && `
+    color: red;
+    `}
+`
+
 const getPossiblePoints = (picks) => {
     return Object.entries(picks)
         .filter(([state, choice]) => choice)
@@ -36,7 +45,15 @@ const getActualScore = (picks, results) => {
         .reduce((a, b) => a + b)
 }
 
-const ScoreRow = ({user, picks, results}) => {
+const getStatePicks = (picks) => {
+    return stateToColor(Object.entries(picks).filter(([name, value]) => value !== null))
+}
+
+const stateToColor = (pickArray) => {
+    return <BlueOrRedState bidenOrTrump={pickArray}></BlueOrRedState>
+}
+
+const ScoreRow = ({user, picks, results}) => {  
     const [expanded, setExpanded] = useState(false);
     return (
         <Fragment>
@@ -49,6 +66,9 @@ const ScoreRow = ({user, picks, results}) => {
                 </td>
                 <td>
                     {getActualScore(picks, results)}
+                </td>
+                <td>
+                    {getStatePicks(picks)}
                 </td>
             </ScoreContainer>
             {expanded && <ScoreboardMap height={400} picks={picks}/>}
@@ -72,7 +92,7 @@ const ScoreboardMap = ({picks}) => {
 //         const aReal = getActualScore(a.picks, results);
 //         const bReal = getActualScore(b.picks, results);
 //
-//         const
+//         const 
 //     })
 // }
 
@@ -102,8 +122,9 @@ export const Scoreboard = () => {
                     <th> Name</th>
                     <th> Possible</th>
                     <th> Score</th>
+                    <th> States Picked</th>
                 </tr>
-                {picks && picks.map(pick => <ScoreRow user={pick.user} picks={pick.picks} results={results}/>)}
+                {picks && picks.map(pick => <ScoreRow user={pick.user} picks={pick.picks} results={results} states={pick.picks}/>)}
             </ScoresTable>
         </ScoreboardContainer>
     )
