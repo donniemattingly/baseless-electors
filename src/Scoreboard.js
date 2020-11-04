@@ -20,11 +20,13 @@ const ScoreContainer = styled.tr`
 
 const ScoresTable = styled.table`
   margin: auto;
+  text-align: right;
 `
 
-const getPossiblePoints = (picks) => {
+const getPossiblePoints = (picks, results) => {
     return Object.entries(picks)
         .filter(([state, choice]) => choice)
+        .filter(([state, choice]) => !results[state])
         .map(([state, choice]) => pickOptions[state][choice])
         .reduce((a, b) => a + b);
 }
@@ -36,7 +38,14 @@ const getActualScore = (picks, results) => {
         .reduce((a, b) => a + b)
 }
 
-const ScoreRow = ({user, picks, results}) => {
+const getBrianScore = (picks, results) => {
+    return Object.entries(picks)
+        .filter(([state, choice]) => choice)
+        .map(([state, choice]) => results[state] === choice ? pickOptions[state][choice] : 0)
+        .reduce((a, b) => a + b)
+}
+
+const ScoreRow = ({user, picks, results, brian}) => {
     const [expanded, setExpanded] = useState(false);
     return (
         <Fragment>
@@ -45,7 +54,13 @@ const ScoreRow = ({user, picks, results}) => {
                     {user.name}
                 </td>
                 <td>
-                    {getPossiblePoints(picks)}
+                    {getPossiblePoints(picks, results)}
+                </td>
+                <td>
+                    {getPossiblePoints(picks, brian)}
+                </td>
+                <td>
+                    {getBrianScore(picks, brian)}
                 </td>
                 <td>
                     {getActualScore(picks, results)}
@@ -79,6 +94,7 @@ const ScoreboardMap = ({picks}) => {
 export const Scoreboard = () => {
     const [picks, setPicks] = useState(null);
     const [results, setResults] = useState(null);
+    const [brian, setBrian] = useState(null);
 
     useEffect(async () => {
         const snapshot = await firebase.firestore().collection('picks').get()
@@ -87,7 +103,10 @@ export const Scoreboard = () => {
         const results = snapshot.docs.find(d => d.id === 'results');
         setResults(results.data());
 
-        const picks = snapshot.docs.filter(doc => doc.id !== 'results').map(doc => doc.data())
+        const brian = snapshot.docs.find(d => d.id === 'brian');
+        setBrian({...results, ...brian.data()});
+
+        const picks = snapshot.docs.filter(doc => doc.id !== 'results' && doc.id !== 'brian').map(doc => doc.data())
         setPicks(picks);
     }, [])
 
@@ -101,9 +120,11 @@ export const Scoreboard = () => {
                 <tr>
                     <th> Name</th>
                     <th> Possible</th>
+                    <th> BrianBot ® Potential Maybe Points</th>
+                    <th> BrianBot ®</th>
                     <th> Score</th>
                 </tr>
-                {picks && picks.map(pick => <ScoreRow user={pick.user} picks={pick.picks} results={results}/>)}
+                {picks && picks.map(pick => <ScoreRow user={pick.user} picks={pick.picks} brian={brian} results={results}/>)}
             </ScoresTable>
         </ScoreboardContainer>
     )
