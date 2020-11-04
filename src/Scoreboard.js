@@ -59,7 +59,7 @@ const ScoreRow = ({user, picks, results}) => {
 const ScoreboardMap = ({picks}) => {
     return (
         <tr>
-            <td colSpan='3'>
+            <td colSpan='5'>
                 <USAMap customize={makeColors(picks)}/>
             </td>
         </tr>
