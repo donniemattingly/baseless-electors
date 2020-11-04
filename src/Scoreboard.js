@@ -8,6 +8,8 @@ import {makeColors} from "./StatePicker";
 
 const ScoreboardContainer = styled.div`
   margin: auto;
+  padding: 40px;
+  background: #ffffff;
 `
 
 const ScoresContainer = styled.div`
@@ -120,7 +122,7 @@ export const Scoreboard = () => {
             <h1> Scoreboard <span className="scoreboard-year">2020</span> </h1>
             <ScoresTable>
                 <tr className="table-header">
-                    <th> Name</th>
+                    <th className="table-header-name"> Name</th>
                     <th> Possible</th>
                     <th> BrianBot®<br />Remaining</th>
                     <th> BrianBot ®</th>

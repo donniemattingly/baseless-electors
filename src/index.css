@@ -8,6 +8,7 @@ body {
   text-align: center;
   max-width: 800px;
   margin: auto;
+  background: #eee;
 }
 
 code {
@@ -34,6 +35,9 @@ h1 {
 .table-header th {
 	border-bottom: 1px solid #eee;
 	padding-bottom: 10px;
+}
+.table-header-name {
+	width: 200px;
 }
 .scoreboard-entry {
 	cursor: pointer;
