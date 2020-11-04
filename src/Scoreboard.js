@@ -140,17 +140,25 @@ export const Scoreboard = () => {
 
     return (
         <ScoreboardContainer>
-            <h1> Scoreboard <span className="scoreboard-year">2020</span> </h1>
+            <h1> Scoreboard <span className="scoreboard-year">2020</span></h1>
             <ScoresTable>
                 <tr className="table-header">
                     <th className="table-header-name"> Name</th>
-                    <th onClick={() => setSorting(results, 'getPossiblePoints')}> Possible </th>
-                    <th onClick={() => setSorting(brian, 'getPossiblePoints')}> BrianBot®<br />Remaining</th>
+                    <th onClick={() => setSorting(results, 'getPossiblePoints')}> Possible</th>
+                    <th onClick={() => setSorting(brian, 'getPossiblePoints')}> BrianBot®<br/>Remaining</th>
                     <th onClick={() => setSorting(brian, 'getActualScore')}> BrianBot ®</th>
                     <th onClick={() => setSorting(results, 'getActualScore')}> Score</th>
                 </tr>
-                {renderedPicks && renderedPicks.map(pick => <ScoreRow key={pick.user.email} user={pick.user} picks={pick.picks} brian={brian} results={results}/>)}
+                {renderedPicks && renderedPicks.map(pick => <ScoreRow key={pick.user.email} user={pick.user}
+                                                                      picks={pick.picks} brian={brian}
+                                                                      results={results}/>)}
             </ScoresTable>
+
+            {results && <h1> Official Results </h1>}
+            {results && <ScoreboardMap picks={results}/>}
+
+            {brian && <h1> BrianBot ® Projections</h1>}
+            {brian && <ScoreboardMap picks={{...results, ...brian}}/>}
         </ScoreboardContainer>
     )
 }
