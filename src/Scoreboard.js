@@ -86,19 +86,34 @@ const ScoreboardMap = ({picks}) => {
 }
 
 
-// const sortPicks = (picks, results) => {
-//     return picks.sort((a, b) => {
-//         const aReal = getActualScore(a.picks, results);
-//         const bReal = getActualScore(b.picks, results);
-//
-//         const
-//     })
-// }
+const sortPicks = (picks, results, scoreFn) => {
+    console.log('sorting!', results);
+
+    picks.sort((a, b) => {
+        const aReal = scoreFn(a.picks, results);
+        const bReal = scoreFn(b.picks, results);
+
+        return bReal - aReal
+    })
+
+    console.log(picks);
+
+    return picks;
+}
 
 export const Scoreboard = () => {
-    const [picks, setPicks] = useState(null);
+    const [picks, setPicks] = useState([]);
     const [results, setResults] = useState(null);
     const [brian, setBrian] = useState(null);
+    const [sortingResults, setSortingResults] = useState(null);
+    const [sortingFunction, setSortingFunction] = useState('getActualScore');
+
+    const fnMap = {
+        'getActualScore': getActualScore,
+        'getPossiblePoints': getPossiblePoints
+    }
+
+    console.log('Rendered!', sortingFunction, sortingResults);
 
     useEffect(async () => {
         const snapshot = await firebase.firestore().collection('picks').get()
@@ -112,10 +127,16 @@ export const Scoreboard = () => {
 
         const picks = snapshot.docs.filter(doc => doc.id !== 'results' && doc.id !== 'brian').map(doc => doc.data())
         setPicks(picks);
+
+        console.log('Loading')
     }, [])
 
-    console.log('picks', picks);
-    console.log('results', results);
+    const setSorting = (results, sortFn) => {
+        setSortingResults({...results});
+        setSortingFunction(sortFn);
+    }
+
+    const renderedPicks = sortPicks(picks, sortingResults || results, null || fnMap[sortingFunction])
 
     return (
         <ScoreboardContainer>
@@ -123,12 +144,12 @@ export const Scoreboard = () => {
             <ScoresTable>
                 <tr className="table-header">
                     <th className="table-header-name"> Name</th>
-                    <th> Possible</th>
-                    <th> BrianBot®<br />Remaining</th>
-                    <th> BrianBot ®</th>
-                    <th> Score</th>
+                    <th onClick={() => setSorting(results, 'getPossiblePoints')}> Possible </th>
+                    <th onClick={() => setSorting(brian, 'getPossiblePoints')}> BrianBot®<br />Remaining</th>
+                    <th onClick={() => setSorting(brian, 'getActualScore')}> BrianBot ®</th>
+                    <th onClick={() => setSorting(results, 'getActualScore')}> Score</th>
                 </tr>
-                {picks && picks.map(pick => <ScoreRow user={pick.user} picks={pick.picks} brian={brian} results={results}/>)}
+                {renderedPicks && renderedPicks.map(pick => <ScoreRow key={pick.user.email} user={pick.user} picks={pick.picks} brian={brian} results={results}/>)}
             </ScoresTable>
         </ScoreboardContainer>
     )
