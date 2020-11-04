@@ -87,14 +87,14 @@ const ScoreboardMap = ({picks}) => {
 }
 
 
-// const sortPicks = (picks, results) => {
-//     return picks.sort((a, b) => {
-//         const aReal = getActualScore(a.picks, results);
-//         const bReal = getActualScore(b.picks, results);
-//
-//         const 
-//     })
-// }
+const sortPicks = (picks, results) => {
+    return picks.sort((a, b) => {
+        const aReal = getActualScore(a.picks, results);
+        const bReal = getActualScore(b.picks, results);
+
+        return aReal > bReal ? aReal : bReal
+    })
+}
 
 export const Scoreboard = () => {
     const [picks, setPicks] = useState(null);
