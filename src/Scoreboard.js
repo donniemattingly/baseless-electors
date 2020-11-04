@@ -152,13 +152,21 @@ export const Scoreboard = () => {
                 {renderedPicks && renderedPicks.map(pick => <ScoreRow key={pick.user.email} user={pick.user}
                                                                       picks={pick.picks} brian={brian}
                                                                       results={results}/>)}
+
+                <tr>
+                    <td colSpan="5">
+                        <h3> Official Results </h3>
+                    </td>
+                </tr>
+                {results && <ScoreboardMap picks={results}/>}
+
+                <tr>
+                    <td colSpan="5">
+                        <h3> BrianBot ® Projections </h3>
+                    </td>
+                </tr>
+                {brian && <ScoreboardMap picks={{...results, ...brian}}/>}
             </ScoresTable>
-
-            {results && <h1> Official Results </h1>}
-            {results && <ScoreboardMap picks={results}/>}
-
-            {brian && <h1> BrianBot ® Projections</h1>}
-            {brian && <ScoreboardMap picks={{...results, ...brian}}/>}
         </ScoreboardContainer>
     )
 }
